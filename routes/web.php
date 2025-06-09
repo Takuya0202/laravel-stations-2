@@ -1,7 +1,8 @@
 <?php
 
+use App\Http\Controllers\MovieController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\PracticeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,3 +17,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+
+// Route::get('URL', [Controllerの名前::class, 'Controller内のfunction名']);
+Route::get('/practice', [PracticeController::class, 'sample']);
+Route::get('/practice2', [PracticeController::class, 'sample2']);
+Route::get('/practice3',[PracticeController::class,'sample3']);
+Route::get('/getPractice', [PracticeController::class, 'getPractice']);
+
+Route::get('/movies',[MovieController::class,'index']);
+Route::get('/admin/movies',[MovieController::class,'adminIndex'])->name('admin.home');
+Route::get('/admin/movies/create',[MovieController::class,'adminCreate'])->name('mv.create');
+Route::post('/admin/moviews/store',[MovieController::class,'adminStore'])->name('mv.store');
