@@ -14,6 +14,8 @@
       <th>公開年</th>
       <th>公開情報</th>
       <th>概要</th>
+      <th>編集</th>
+      <th>削除</th>
     </thead>
   @foreach ($movies as $mv)
     <tr>
@@ -22,6 +24,8 @@
       <td>{{$mv->published_year}}</td>
       <td>{{$mv->is_showing ? '上映中' : '上映予定'}}</td>
       <td>{{$mv->description}}</td>
+      <td><p><a href="{{route('mv.edit' , ['id' => $mv->id])}}">編集</a></p></td>
+      <td><p><a href="{{route('mv.confirme' , ['id' => $mv->id])}}">削除</a></p></td>
     </tr>
   @endforeach
   </table>
