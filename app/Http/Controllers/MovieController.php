@@ -9,9 +9,24 @@ use Illuminate\Support\Facades\Redis;
 
 class MovieController extends Controller
 {
-    public function index():View
+    public function index(Request $request):View
     {
-        $movies = Movie::all();
+        // クエリ取得
+        $key = $request->input('keyword') ?? null;
+        $is_showing = $request->input('is_showing') ?? null;
+
+        $query = Movie::query();
+        // キーワード検索
+        if ($key) {
+            $query->where('title' , 'like' , '%' . $key . '%')
+            ->orWhere('description' , 'like' , '%' . $key . '%');
+        }
+        // 上映検索
+        if ($is_showing != null) {
+            $query->where('is_showing' , $is_showing);
+        }
+        $movies = $query->paginate(20);
+
         return view('movies.index',compact('movies'));
     }
 
