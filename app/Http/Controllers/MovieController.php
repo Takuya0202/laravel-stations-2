@@ -6,6 +6,7 @@ use App\Http\Requests\CreateMovieRequest;
 use App\Http\Requests\UpdateMovieRequest;
 use App\Models\Genre;
 use App\Models\Movie;
+use App\Models\Schedule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -104,5 +105,16 @@ class MovieController extends Controller
             $mv->delete();
         }
         return redirect()->route('admin.home');
+    }
+
+    public function show(string $id)
+    {
+        $mv = Movie::with(['genre'])
+            ->findOrFail($id);
+        $schedules = Schedule::where('movie_id' , $id)
+                    ->orderBy('start_time' , 'asc')
+                    ->get();
+
+        return view('movies.show' , compact('mv','schedules'));
     }
 }

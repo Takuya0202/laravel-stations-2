@@ -3,6 +3,8 @@
 use App\Http\Controllers\MovieController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PracticeController;
+use App\Http\Controllers\SheetController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,6 +29,7 @@ Route::get('/practice3',[PracticeController::class,'sample3']);
 Route::get('/getPractice', [PracticeController::class, 'getPractice']);
 
 Route::get('/movies',[MovieController::class,'index'])->name('home');
+Route::get('/movies/{id}',[MovieController::class,'show'])->name('mv.show');
 Route::get('/admin/movies',[MovieController::class,'adminIndex'])->name('admin.home');
 Route::get('/admin/movies/create',[MovieController::class,'adminCreate'])->name('mv.create');
 Route::post('/admin/movies/store',[MovieController::class,'adminStore'])->name('mv.store');
@@ -34,3 +37,6 @@ Route::get('/admin/movies/{id}/edit',[MovieController::class,'adminEdit'])->name
 Route::patch('/admin/movies/{id}/update',[MovieController::class,'adminUpdate'])->name('mv.update');
 Route::get('/admin/movies/{id}/confirme',[MovieController::class,'adminConfirme'])->name('mv.confirme');
 Route::delete('/admin/movies/{id}/destroy',[MovieController::class,'adminDelete'])->name('mv.destroy');
+
+// 座席
+Route::get('/sheets',[SheetController::class,'index'])->name('sheets');

@@ -7,7 +7,7 @@
     <title>映画一覧：管理者</title>
 </head>
 <body>
-  <table>
+  <table border="1">
     <thead>
       <th>映画タイトル</th>
       <th>映画url</th>
@@ -17,6 +17,7 @@
       <th>タグ</th>
       <th>編集</th>
       <th>削除</th>
+      <th>詳細</th>
     </thead>
   @foreach ($movies as $mv)
     <tr>
@@ -28,6 +29,7 @@
       <td>{{$mv->genre->name}}</td>
       <td><p><a href="{{route('mv.edit' , ['id' => $mv->id])}}">編集</a></p></td>
       <td><p><a href="{{route('mv.confirme' , ['id' => $mv->id])}}">削除</a></p></td>
+      <td><p><a href="{{route('mv.show' , ['id' => $mv->id])}}">詳細</a></p></td>
     </tr>
   @endforeach
   </table>
