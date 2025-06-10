@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateMovieRequest;
+use App\Http\Requests\UpdateMovieRequest;
+use App\Models\Genre;
 use App\Models\Movie;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redis;
+
 
 class MovieController extends Controller
 {
@@ -32,8 +36,9 @@ class MovieController extends Controller
 
     public function adminIndex():View
     {
-        $movies = Movie::all();
-        return view('movies.admin.index',compact('movies'));
+        $movies = Movie::with(['genre'])->get();
+        $genres = Genre::all();
+        return view('movies.admin.index',compact('movies','genres'));
     }
 
     public function adminCreate()
@@ -41,52 +46,45 @@ class MovieController extends Controller
         return view('movies.admin.create');
     }
 
-    public function adminStore(Request $request)
+    public function adminStore(CreateMovieRequest $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|unique:movies,title',
-            'image_url' => 'required|url',
-            'published_year' => 'required|integer',
-            'is_showing' => 'required|boolean',
-            'description' => 'required|string',
-        ]);
-        Movie::create([
-            'title' => $validated['title'],
-            'image_url' => $validated['image_url'],
-            'published_year' => $validated['published_year'],
-            'is_showing' => $validated['is_showing'],
-            'description' => $validated['description'],
-        ]);
+        // トランザクション
+        DB::transaction(function () use($request){
+            // 存在していたら該当レコードを返し、なかったら新規作成
+            $genre = Genre::firstOrCreate([
+                'name' => $request->genre,
+            ]);
+            $movie = Movie::create([
+                'title' => $request->title,
+                'image_url' => $request->image_url,
+                'published_year' => $request->published_year,
+                'is_showing' => $request->is_showing,
+                'description' => $request->description,
+                'genre_id' => $genre->id,
+            ]);
+        });
         return redirect()->route('admin.home');
     }
 
     public function adminEdit(string $id)
     {
-        $mv = Movie::findOrFail($id);
+        $mv = Movie::with(['genre'])->findOrFail($id);
         return view('movies.admin.edit',compact('mv'));
     }
 
-    public function adminUpdate(string $id , Request $request)
+    public function adminUpdate(string $id ,  UpdateMovieRequest $request)
     {
-        // バリデーション
-        $validated = $request->validate([
-            'title' => 'required|string|unique:movies,title',
-            'image_url' => 'required|url',
-            'published_year' => 'required|integer',
-            'is_showing' => 'required|boolean',
-            'description' => 'required|string',
-        ]);
         // 対象を取得
         $mv = Movie::findOrFail($id);
-        // リクエストからデータ取得
-        $data = [];
-        $data['title'] = $validated['title'];
-        $data['image_url'] = $validated['image_url'];
-        $data['published_year'] = $validated['published_year'];
-        $data['is_showing'] = $validated['is_showing'];
-        $data['description'] = $validated['description'];
-        $mv->update($data);
+        $data = $request->validated();
+        DB::transaction(function() use($request,$mv,$data){
+            $genre = Genre::firstOrCreate([
+                'name' => $request->genre,
+            ]);
+            $data['genre_id'] = $genre->id;
 
+            $mv->update($data);
+        });
         return redirect()->route('admin.home');
     }
 

@@ -37,7 +37,12 @@
         概要
         <textarea name="description" id="" cols="30" rows="10">{{old('description')}}</textarea>
     </p>
+    <p>
+        ジャンルを入力
+        <input type="text" name="genre" value="{{old('genre')}}">
+    </p>
     <button type="submit">追加</button>
   </form>
+  <p><a href="{{route('admin.home')}}">戻る</a></p>
 </body>
 </html>

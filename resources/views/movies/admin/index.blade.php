@@ -14,6 +14,7 @@
       <th>公開年</th>
       <th>公開情報</th>
       <th>概要</th>
+      <th>タグ</th>
       <th>編集</th>
       <th>削除</th>
     </thead>
@@ -24,11 +25,17 @@
       <td>{{$mv->published_year}}</td>
       <td>{{$mv->is_showing ? '上映中' : '上映予定'}}</td>
       <td>{{$mv->description}}</td>
+      <td>{{$mv->genre->name}}</td>
       <td><p><a href="{{route('mv.edit' , ['id' => $mv->id])}}">編集</a></p></td>
       <td><p><a href="{{route('mv.confirme' , ['id' => $mv->id])}}">削除</a></p></td>
     </tr>
   @endforeach
   </table>
+  <ul>
+    @foreach ($genres as $genre)
+        <li>{{$genre->name}}</li>
+    @endforeach
+  </ul>
   <p><a href="{{route('mv.create')}}">映画を追加</a></p>
 </body>
 </html>

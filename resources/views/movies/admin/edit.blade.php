@@ -38,6 +38,10 @@
         概要
         <textarea name="description" id="" cols="30" rows="10">{{old('description' , $mv->description)}}</textarea>
     </p>
+    <p>
+        ジャンルを入力
+        <input type="text" name="genre" value="{{old('genre' , $mv->genre->name)}}">
+    </p>
     <button type="submit">追加</button>
     <p><a href="{{route('admin.home')}}">戻る</a></p>
   </form>
