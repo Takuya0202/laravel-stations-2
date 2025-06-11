@@ -26,11 +26,14 @@
             <td>{{$mv->genre->name}}</td>
         </tr>
     </table>
-    <h2>公開状況</h2>
+    <h2>ID:{{$mv->id}} 映画タイトル：{{$mv->title}}のスケジュール一覧</h2>
     <ul>
         @foreach ($schedules as $sc)
-            <li>上映開始：{{$sc->start_time}}</li>
-            <li>上映終了；{{$sc->end_time}}</li>
+            <li><a href="{{route('admin.schedules.show' , ['id' => $sc->id ])}}">上映開始：{{$sc->start_time}}</a></li>
+            <li><a href="{{route('admin.schedules.show' , ['id' => $sc->id ])}}">上映終了；{{$sc->end_time}}</a></li>
+            @if ($loop->last)
+            <p><a href="{{route('admin.schedules.create' , ['id' => $sc->id])}}">新しいスケジュールを追加</a></p>
+            @endif
         @endforeach
     </ul>
     <p><a href="{{route('admin.home')}}">戻る</a></p>

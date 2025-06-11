@@ -117,4 +117,12 @@ class MovieController extends Controller
 
         return view('movies.show' , compact('mv','schedules'));
     }
+
+    public function adminShow (string $id)
+    {
+        $mv = Movie::with(['schedules'])
+                ->findOrFail($id);
+
+        return view('movies.admin.show',compact('mv'));
+    }
 }

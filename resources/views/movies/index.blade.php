@@ -23,7 +23,7 @@
   </form>
   <ul>
     @foreach ($movies as $mv)
-      <li>映画タイトル：{{$mv->title}}</li>
+      <li>映画タイトル：<a href="{{route('mv.show' , ['id' => $mv->id])}}">{{$mv->title}}</a></li>
       <li>映画URL : {{$mv->image_url}}</li>
       <li>公開状況：{{$mv->is_showing}}</li>
     @endforeach

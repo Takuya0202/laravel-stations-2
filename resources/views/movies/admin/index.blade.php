@@ -39,5 +39,6 @@
     @endforeach
   </ul>
   <p><a href="{{route('mv.create')}}">映画を追加</a></p>
+  <p><a href="{{route('admin.schedules.index')}}">スケジュール一覧</a></p>
 </body>
 </html>
