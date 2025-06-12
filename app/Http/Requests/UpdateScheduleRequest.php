@@ -42,8 +42,11 @@ class UpdateScheduleRequest extends FormRequest
             try {
                 $start_time = new Carbon($this->input('start_time_date') . ' ' . $this->input('start_time_time'));
                 $end_time = new Carbon($this->input('end_time_date') . ' ' . $this->input('end_time_time'));
-                if ($end_time->diffInMinutes($start_time) <= 5 || $start_time >= $end_time) {
-                    $validator->errors()->add('start_time_time','上映開始時間と終了時間の差が5分未満です');
+                if ($start_time >= $end_time) {
+                    $validator->errors()->add('start_time_time', '開始時刻が終了時刻より後または同じです');
+                    $validator->errors()->add('end_time_time','開始時刻が終了時刻より後');
+                } elseif ($start_time->diffInMinutes($end_time) <= 5) {
+                    $validator->errors()->add('start_time_time', '上映時間は5分以上必要です');
                     $validator->errors()->add('end_time_time','開始時刻が終了時刻より後');
                 }
             } catch (\Exception $e) {
