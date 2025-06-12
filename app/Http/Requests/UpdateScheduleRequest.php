@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests;
 
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+
 
 class UpdateScheduleRequest extends FormRequest
 {
@@ -30,5 +34,21 @@ class UpdateScheduleRequest extends FormRequest
             'end_time_date' => ['required', 'date_format:Y-m-d', 'after_or_equal:start_time_date'],
             'end_time_time' => ['required', 'date_format:H:i'],
         ];
+    }
+
+    public function withValidator(Validator $validator):void
+    {
+        $validator->after(function (Validator $validator){
+            try {
+                $start_time = new Carbon($this->input('start_time_date') . ' ' . $this->input('start_time_time'));
+                $end_time = new Carbon($this->input('end_time_date') . ' ' . $this->input('end_time_time'));
+                if ($end_time->diffInMinutes($start_time) <= 5 || $start_time >= $end_time) {
+                    $validator->errors()->add('start_time_time','上映開始時間と終了時間の差が5分未満です');
+                    $validator->errors()->add('end_time_time','開始時刻が終了時刻より後');
+                }
+            } catch (\Exception $e) {
+                $validator->errors()->add('start_time_time','フォーマットが正しくありません');
+            }
+        });
     }
 }
