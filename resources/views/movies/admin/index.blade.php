@@ -29,7 +29,7 @@
       <td>{{$mv->genre->name}}</td>
       <td><p><a href="{{route('mv.edit' , ['id' => $mv->id])}}">編集</a></p></td>
       <td><p><a href="{{route('mv.confirme' , ['id' => $mv->id])}}">削除</a></p></td>
-      <td><p><a href="{{route('mv.show' , ['id' => $mv->id])}}">詳細</a></p></td>
+      <td><p><a href="{{route('admin.mv.show' , ['id' => $mv->id])}}">詳細</a></p></td>
     </tr>
   @endforeach
   </table>

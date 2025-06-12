@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateScheduleRequest extends FormRequest
@@ -29,6 +30,15 @@ class CreateScheduleRequest extends FormRequest
             'start_time_time' => ['required', 'date_format:H:i'],
             'end_time_date' => ['required', 'date_format:Y-m-d', 'after_or_equal:start_time_date'],
             'end_time_time' => ['required', 'date_format:H:i'],
+        ];
+    }
+
+    public function after()
+    {
+        return[
+            function (Validator $validator){
+
+            }
         ];
     }
 }

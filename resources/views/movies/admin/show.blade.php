@@ -13,5 +13,6 @@
             <li>開始時刻：{{$sc->start_time}}~終了時刻{{$sc->end_time}}</li>
         @endforeach
     </ul>
+    <p><a href="{{route('admin.home')}}">戻る</a></p>
 </body>
 </html>
