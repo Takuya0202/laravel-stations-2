@@ -28,6 +28,13 @@
     </table>
     <h2>ID:{{$mv->id}} 映画タイトル：{{$mv->title}}のスケジュール一覧</h2>
     <ul>
+        @foreach ($mv->schedules as $sc)
+            <li>開始時刻：{{$sc->start_time}}~終了時刻{{$sc->end_time}}</li>
+        @endforeach
+    </ul>
+    <p><a href="">座席を予約する</a></p>
+
+    {{-- <ul>
         @foreach ($schedules as $sc)
             <li><a href="{{route('admin.schedules.show' , ['id' => $sc->id ])}}">上映開始：{{$sc->start_time}}</a></li>
             <li><a href="{{route('admin.schedules.show' , ['id' => $sc->id ])}}">上映終了；{{$sc->end_time}}</a></li>
@@ -35,7 +42,7 @@
             <p><a href="{{route('admin.schedules.create' , ['id' => $mv->id])}}">新しいスケジュールを追加</a></p>
             @endif
         @endforeach
-    </ul>
+    </ul> --}}
     <p><a href="{{route('home')}}">戻る</a></p>
 </body>
 </html>

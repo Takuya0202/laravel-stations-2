@@ -7,10 +7,19 @@
     <title>Document</title>
 </head>
 <body>
-    <h2>映画タイトル：{{$mv->title}} 映画URL:{{$mv->image_url}}公開年:{{$mv->published_year}} 公開状況:{{$mv->is_showing ? '上映中' : '上映予定'}} 概要：{{$mv->description}}</h2>
+    {{-- <h2>映画タイトル：{{$mv->title}} 映画URL:{{$mv->image_url}}公開年:{{$mv->published_year}} 公開状況:{{$mv->is_showing ? '上映中' : '上映予定'}} 概要：{{$mv->description}}</h2>
     <ul>
         @foreach ($mv->schedules as $sc)
             <li>開始時刻：{{$sc->start_time}}~終了時刻{{$sc->end_time}}</li>
+        @endforeach
+    </ul> --}}
+    <ul>
+        @foreach ($schedules as $sc)
+            <li><a href="{{route('admin.schedules.show' , ['id' => $sc->id ])}}">上映開始：{{$sc->start_time}}</a></li>
+            <li><a href="{{route('admin.schedules.show' , ['id' => $sc->id ])}}">上映終了；{{$sc->end_time}}</a></li>
+            @if ($loop->last)
+            <p><a href="{{route('admin.schedules.create' , ['id' => $mv->id])}}">新しいスケジュールを追加</a></p>
+            @endif
         @endforeach
     </ul>
     <p><a href="{{route('admin.home')}}">戻る</a></p>
