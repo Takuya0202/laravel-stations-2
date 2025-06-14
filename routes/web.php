@@ -3,8 +3,10 @@
 use App\Http\Controllers\MovieController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PracticeController;
+use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SheetController;
+use App\Models\Reservation;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +46,7 @@ Route::delete('/admin/movies/{id}/destroy',[MovieController::class,'adminDelete'
 // 座席
 Route::get('/sheets',[SheetController::class,'index'])->name('sheets');
 
+
 // スケジュール
 Route::get('/admin/schedules',[ScheduleController::class,'adminIndex'])->name('admin.schedules.index');
 Route::get('/admin/schedules/{id}',[ScheduleController::class,'adminShow'])->name('admin.schedules.show');
@@ -52,3 +55,8 @@ Route::post('/admin/movies/{id}/schedules/store',[ScheduleController::class,'adm
 Route::get('/admin/schedules/{scheduleId}/edit',[ScheduleController::class,'adminEdit'])->name('admin.schedules.edit');
 Route::patch('/admin/schedules/{id}/update',[ScheduleController::class,'adminUpdate'])->name('admin.schedules.update');
 Route::delete('/admin/schedules/{scheduleId}/destroy',[ScheduleController::class,'adminDelete'])->name('admin.schedules.delete');
+
+// 予約
+Route::get('/movies/{movie_id}/schedules/{schedule_id}/sheets',[ReservationController::class,'show'])->name('reservation.index');
+Route::get('/movies/{movie_id}/schedules/{schedule_id}/reservations/create',[ReservationController::class,'create'])->name('reservation.create');
+Route::post('/reservations/store',[ReservationController::class,'store'])->name('reservation.store');

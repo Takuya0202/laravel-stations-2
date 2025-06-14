@@ -26,14 +26,19 @@
             <td>{{$mv->genre->name}}</td>
         </tr>
     </table>
+    @if (session('message'))
+        {{session('message')}}
+    @endif
     <h2>ID:{{$mv->id}} 映画タイトル：{{$mv->title}}のスケジュール一覧</h2>
     <ul>
-        @foreach ($mv->schedules as $sc)
+        @foreach ($schedules as $sc)
             <li>開始時刻：{{$sc->start_time}}~終了時刻{{$sc->end_time}}</li>
+            <form action="{{route('reservation.index', ['movie_id' => $mv->id , 'schedule_id' => $sc->id] )}}" method="get">
+                <input type="text" name="date" value="{{now()}}" hidden>
+                <button type="submit">座席を予約する</button>
+            </form>
         @endforeach
     </ul>
-    <p><a href="">座席を予約する</a></p>
-
     {{-- <ul>
         @foreach ($schedules as $sc)
             <li><a href="{{route('admin.schedules.show' , ['id' => $sc->id ])}}">上映開始：{{$sc->start_time}}</a></li>

@@ -8,10 +8,14 @@
 </head>
 <body>
     <h1>座席一覧</h1>
-    <table>
-        @foreach ($sheets as $sheet)
+    <table border="1">
+        @foreach ($sheets as $row => $elements)
             <tr>
-                <td>{{$sheet->row}}-{{$sheet->column}}</td>
+                @foreach ($elements as $elem)
+                    <td>
+                        {{$elem->row}}-{{$elem->column}}
+                    </td>
+                @endforeach
             </tr>
         @endforeach
     </table>

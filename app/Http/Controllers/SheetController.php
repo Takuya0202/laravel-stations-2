@@ -10,7 +10,7 @@ class SheetController extends Controller
 {
     public function index()
     {
-        $sheets = Sheet::all();
+        $sheets = Sheet::all()->groupBy('row');
 
         return view('movies.sheets',compact('sheets'));
     }

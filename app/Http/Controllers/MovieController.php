@@ -109,7 +109,7 @@ class MovieController extends Controller
 
     public function show(string $id)
     {
-        $mv = Movie::with(['genre'])
+        $mv = Movie::with(['genre','schedules'])
             ->findOrFail($id);
         $schedules = Schedule::where('movie_id' , $id)
                     ->orderBy('start_time' , 'asc')
