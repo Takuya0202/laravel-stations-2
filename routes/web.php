@@ -7,6 +7,7 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SheetController;
 use App\Models\Reservation;
+use Faker\Guesser\Name;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,3 +61,9 @@ Route::delete('/admin/schedules/{scheduleId}/destroy',[ScheduleController::class
 Route::get('/movies/{movie_id}/schedules/{schedule_id}/sheets',[ReservationController::class,'show'])->name('reservation.index');
 Route::get('/movies/{movie_id}/schedules/{schedule_id}/reservations/create',[ReservationController::class,'create'])->name('reservation.create');
 Route::post('/reservations/store',[ReservationController::class,'store'])->name('reservation.store');
+Route::get('/admin/reservations',[ReservationController::class,'adminIndex'])->name('admin.reservation.index');
+Route::get('/admin/reservations/create',[ReservationController::class,'adminCreate'])->name('admin.reservation.create');
+Route::post('/admin/reservations',[ReservationController::class,'adminStore'])->name('admin.reservation.store');
+Route::get('/admin/reservations/{id}/edit',[ReservationController::class,'adminEdit'])->name('admin.reservation.edit');
+Route::patch('/admin/reservations/{id}',[ReservationController::class,'adminUpdate'])->name('admin.reservation.update');
+Route::delete('/admin/reservations/{id}',[ReservationController::class,'adminDelete'])->name('admin.reservation.delete');

@@ -29,6 +29,7 @@ class CreateAdminReservationRequest extends FormRequest
             'sheet_id' => ['required'],
             'name' => ['required'],
             'email' => ['required', 'email:strict,dns'],
+            // 'date' => ['required', 'date_format:Y-m-d']
         ];
     }
 }

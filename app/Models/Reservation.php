@@ -24,7 +24,7 @@ class Reservation extends Model
         return $this->belongsTo(Sheet::class);
     }
 
-    public function schedules():BelongsTo
+    public function schedule():BelongsTo
     {
         return $this->belongsTo(Schedule::class);
     }

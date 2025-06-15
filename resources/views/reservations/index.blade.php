@@ -12,12 +12,21 @@
         @foreach ($sheets as $row => $elements)
             <tr>
                 @foreach ($elements as $elem)
+                {{-- 予約可能な席であるかどうかを判断する --}}
                     <td>
-                        <form action="{{route('reservation.create',['movie_id' => $movie_id , 'schedule_id' => $schedule_id])}}" method="get">
-                            <input type="text" name="sheetId" value="{{$elem->id}}" hidden>
-                            <input type="text" name="date" value="{{$date}}" hidden>
-                            <button type="submit">{{$elem->row}}-{{$elem->column}}</button>
-                        </form>
+                        {{-- 予約済みの場合 --}}
+                        @if (in_array($elem->id,$sheet_ids))
+                            <div style="text-align: center;background-color: #999999">
+                                {{$elem->row}}-{{$elem->column}}
+                            </div>
+                        @else
+                            {{-- 未予約の場合 --}}
+                            <form action="{{route('reservation.create',['movie_id' => $movie_id , 'schedule_id' => $schedule_id])}}" method="get">
+                                <input type="text" name="sheetId" value="{{$elem->id}}" hidden>
+                                <input type="text" name="date" value="{{$date}}" hidden>
+                                <button type="submit">{{$elem->row}}-{{$elem->column}}</button>
+                            </form>
+                        @endif
                     </td>
                 @endforeach
             </tr>
