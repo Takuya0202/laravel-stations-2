@@ -1,69 +1,20 @@
 <?php
 
-use App\Http\Controllers\MovieController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PracticeController;
-use App\Http\Controllers\ReservationController;
-use App\Http\Controllers\ScheduleController;
-use App\Http\Controllers\SheetController;
-use App\Models\Reservation;
-use Faker\Guesser\Name;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
-// Route::get('URL', [Controllerの名前::class, 'Controller内のfunction名']);
-Route::get('/practice', [PracticeController::class, 'sample']);
-Route::get('/practice2', [PracticeController::class, 'sample2']);
-Route::get('/practice3',[PracticeController::class,'sample3']);
-Route::get('/getPractice', [PracticeController::class, 'getPractice']);
-
-// 映画
-Route::get('/movies',[MovieController::class,'index'])->name('home');
-Route::get('/movies/{id}',[MovieController::class,'show'])->name('mv.show');
-Route::get('/admin/movies',[MovieController::class,'adminIndex'])->name('admin.home');
-Route::get('/admin/movies/{id}',[MovieController::class,'adminShow'])->whereNumber('id')->name('admin.movies.show');
-Route::get('/admin/movies/create',[MovieController::class,'adminCreate'])->name('mv.create');
-Route::post('/admin/movies/store',[MovieController::class,'adminStore'])->name('mv.store');
-Route::get('/admin/movies/{id}/edit',[MovieController::class,'adminEdit'])->name('mv.edit')->whereNumber('id');
-Route::patch('/admin/movies/{id}/update',[MovieController::class,'adminUpdate'])->name('mv.update');
-Route::get('/admin/movies/{id}/confirme',[MovieController::class,'adminConfirme'])->name('mv.confirme');
-Route::delete('/admin/movies/{id}/destroy',[MovieController::class,'adminDelete'])->name('mv.destroy');
-
-// 座席
-Route::get('/sheets',[SheetController::class,'index'])->name('sheets');
-
-
-// スケジュール
-Route::get('/admin/schedules',[ScheduleController::class,'adminIndex'])->name('admin.schedules.index');
-Route::get('/admin/schedules/{id}',[ScheduleController::class,'adminShow'])->name('admin.schedules.show');
-Route::get('/admin/movies/{id}/schedules/create',[ScheduleController::class,'adminCreate'])->name('admin.schedules.create');
-Route::post('/admin/movies/{id}/schedules/store',[ScheduleController::class,'adminStore'])->name('admin.schedules.store');
-Route::get('/admin/schedules/{scheduleId}/edit',[ScheduleController::class,'adminEdit'])->name('admin.schedules.edit');
-Route::patch('/admin/schedules/{id}/update',[ScheduleController::class,'adminUpdate'])->name('admin.schedules.update');
-Route::delete('/admin/schedules/{scheduleId}/destroy',[ScheduleController::class,'adminDelete'])->name('admin.schedules.delete');
-
-// 予約
-Route::get('/movies/{movie_id}/schedules/{schedule_id}/sheets',[ReservationController::class,'show'])->name('reservation.index');
-Route::get('/movies/{movie_id}/schedules/{schedule_id}/reservations/create',[ReservationController::class,'create'])->name('reservation.create');
-Route::post('/reservations/store',[ReservationController::class,'store'])->name('reservation.store');
-Route::get('/admin/reservations',[ReservationController::class,'adminIndex'])->name('admin.reservation.index');
-Route::get('/admin/reservations/create',[ReservationController::class,'adminCreate'])->name('admin.reservation.create');
-Route::post('/admin/reservations',[ReservationController::class,'adminStore'])->name('admin.reservation.store');
-Route::get('/admin/reservations/{id}/edit',[ReservationController::class,'adminEdit'])->name('admin.reservation.edit');
-Route::patch('/admin/reservations/{id}',[ReservationController::class,'adminUpdate'])->name('admin.reservation.update');
-Route::delete('/admin/reservations/{id}',[ReservationController::class,'adminDelete'])->name('admin.reservation.delete');
+require __DIR__.'/auth.php';

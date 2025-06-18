@@ -16,21 +16,24 @@ class MovieController extends Controller
 {
     public function index(Request $request):View
     {
-        // クエリ取得
-        $key = $request->input('keyword') ?? null;
-        $is_showing = $request->input('is_showing') ?? null;
+        // // クエリ取得
+        // $key = $request->input('keyword') ?? null;
+        // $is_showing = $request->input('is_showing') ?? null;
 
-        $query = Movie::query();
-        // キーワード検索
-        if ($key) {
-            $query->where('title' , 'like' , '%' . $key . '%')
-            ->orWhere('description' , 'like' , '%' . $key . '%');
-        }
-        // 上映検索
-        if ($is_showing != null) {
-            $query->where('is_showing' , $is_showing);
-        }
-        $movies = $query->paginate(20);
+        // $query = Movie::query();
+        // // キーワード検索
+        // if ($key) {
+        //     $query->where('title' , 'like' , '%' . $key . '%')
+        //     ->orWhere('description' , 'like' , '%' . $key . '%');
+        // }
+        // // 上映検索
+        // if ($is_showing != null) {
+        //     $query->where('is_showing' , $is_showing);
+        // }
+        // $movies = $query->paginate(20);
+        //作品データの変数名は、 view に渡している変数名と合わせて適宜変更してください
+        //$movies = DB::table('movies')->whereRaw("title = '{$request->input('keyword')}'")->get();
+        $movies = DB::table('movies')->whereRaw("title = ?", [$request->input('keyword')])->get();
 
         return view('movies.index',compact('movies'));
     }
