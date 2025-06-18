@@ -120,7 +120,7 @@ class MovieController extends Controller
 
     public function adminShow (string $id)
     {
-        $mv = Movie::with(['schedules'])
+        $mv = Movie::with(['schedules','schedules.screen'])
                 ->findOrFail($id);
 
         return view('movies.admin.show',compact('mv'));

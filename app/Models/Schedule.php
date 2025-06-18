@@ -13,8 +13,15 @@ class Schedule extends Model
 
     protected $fillable = [
         'movie_id',
+        'screen_id',
         'start_time',
         'end_time',
+    ];
+
+    // datetimeに意図的に変換
+    protected $casts = [
+    'start_time' => 'datetime',
+    'end_time' => 'datetime',
     ];
 
     public function movie():BelongsTo
@@ -27,10 +34,9 @@ class Schedule extends Model
         return $this->hasMany(Reservation::class);
     }
 
-    // datetimeに意図的に変換
-    protected $casts = [
-    'start_time' => 'datetime',
-    'end_time' => 'datetime',
-    ];
+    public function screen():BelongsTo
+    {
+        return $this->belongsTo(Screen::class);
+    }
 
 }

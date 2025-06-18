@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Schedule;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Validation\Validator;
@@ -28,6 +29,7 @@ class CreateScheduleRequest extends FormRequest
     {
         return [
             'movie_id' => ['required'],
+            'screen_id' => ['required'], // 追加
             'start_time_date' => ['required', 'date_format:Y-m-d', 'before_or_equal:end_time_date'],
             'start_time_time' => ['required', 'date_format:H:i'],
             'end_time_date' => ['required', 'date_format:Y-m-d', 'after_or_equal:start_time_date'],
@@ -38,6 +40,7 @@ class CreateScheduleRequest extends FormRequest
     public function withValidator(Validator $validator):void
     {
         $validator->after(function (Validator $validator){
+            // 時間帯についてのバリデーション
             try {
                 $start_time = new Carbon($this->input('start_time_date') . ' ' . $this->input('start_time_time'));
                 $end_time = new Carbon($this->input('end_time_date') . ' ' . $this->input('end_time_time'));
@@ -47,6 +50,21 @@ class CreateScheduleRequest extends FormRequest
                 } elseif ($start_time->diffInMinutes($end_time) <= 5) {
                     $validator->errors()->add('start_time_time', '上映時間は5分以上必要です');
                     $validator->errors()->add('end_time_time','開始時刻が終了時刻より後');
+                }
+            } catch (\Exception $e) {
+                $validator->errors()->add('start_time_time','フォーマットが正しくありません');
+            }
+            // 同一スクリーンの同一自国での上映をできなくする
+            $movie_id = $this->input('movie_id');
+            $screen_id = $this->input('screen_id');
+            try {
+                $start_time = new Carbon($this->input('start_time_date') . ' ' . $this->input('start_time_time'));
+                $end_time = new Carbon($this->input('end_time_date') . ' ' . $this->input('end_time_time'));
+                $is_showing = Schedule::where('screen_id',$screen_id)
+                                    ->whereBetween('end_time',[$start_time,$end_time])
+                                    ->exists();
+                if ($is_showing) {
+                    $validator->errors()->add('screen_id','このスクリーンは上映予定です。');
                 }
             } catch (\Exception $e) {
                 $validator->errors()->add('start_time_time','フォーマットが正しくありません');

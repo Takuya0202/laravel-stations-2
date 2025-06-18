@@ -11,7 +11,7 @@
         <h2>作品ID:{{$mv->id}} 作品名：{{$mv->title}}</h2>
         @foreach ($mv->schedules as $sch)
             <ul>
-                <li><a href="{{route('admin.schedules.show' , ['id' => $sch->id ])}}">開始時間：{{$sch->start_time}} 終了時間:{{$sch->end_time}}</a></li>
+                <li>スクリーンID:{{$sch->screen->id}}<a href="{{route('admin.schedules.show' , ['id' => $sch->id ])}}">開始時間：{{$sch->start_time}} 終了時間:{{$sch->end_time}}</a></li>
             </ul>
         @endforeach
     @endforeach

@@ -20,6 +20,11 @@
         @csrf
         <label for="">映画ID</label>
         <input type="text" name="movie_id" id="" value="{{$movie_id}}" readonly><br>
+        <select name="screen_id" id="">
+            @foreach ($screens as $screen)
+                <option value="{{$screen->id}}" @selected($screen->id == old('screen_id'))>{{$screen->name}}</option>
+            @endforeach
+        </select><br>
         <label for="">上映開始日時</label>
         <input type="text" name="start_time_date" value="{{old('start_time_date')}}"><br>
         <label for="">上映開始時刻</label>

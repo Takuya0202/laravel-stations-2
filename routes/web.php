@@ -36,7 +36,7 @@ Route::get('/getPractice', [PracticeController::class, 'getPractice']);
 Route::get('/movies',[MovieController::class,'index'])->name('home');
 Route::get('/movies/{id}',[MovieController::class,'show'])->name('mv.show');
 Route::get('/admin/movies',[MovieController::class,'adminIndex'])->name('admin.home');
-Route::get('/admin/movies/{id}',[MovieController::class,'adminShow'])->whereNumber('id')->name('admin.mv.show');
+Route::get('/admin/movies/{id}',[MovieController::class,'adminShow'])->whereNumber('id')->name('admin.movies.show');
 Route::get('/admin/movies/create',[MovieController::class,'adminCreate'])->name('mv.create');
 Route::post('/admin/movies/store',[MovieController::class,'adminStore'])->name('mv.store');
 Route::get('/admin/movies/{id}/edit',[MovieController::class,'adminEdit'])->name('mv.edit')->whereNumber('id');
